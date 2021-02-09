@@ -1,5 +1,5 @@
 #!/bin/bash
-# https://github.com/complexorganizations/wireguard-manager
+# https://github.com/complexorganizations/shell-script-boilerplate
 
 # Require script to be run as root
 function super-user-check() {
@@ -53,7 +53,7 @@ installing-system-requirements
 # Global variables
 GLOBAL_VARIABLES="/config/file/path"
 
-if [ ! -f "$" ]; then
+if [ ! -f "$GLOBAL_VARIABLES" ]; then
 
 # comments for the first question
 function first-question() {
@@ -82,12 +82,16 @@ first-question
 
 ### use the code above to ask any questions as u want.
 function install-the-app() {
-  if { [ "$DISTRO" == "ubuntu" ] || [ "$DISTRO" == "debian" ] || [ "$DISTRO" == "raspbian" ] || [ "$DISTRO" == "pop" ] || [ "$DISTRO" == "kali" ]; }; then
-    apt-get update &&
+  if { [ "$DISTRO" == "ubuntu" ] || [ "$DISTRO" == "debian" ] || [ "$DISTRO" == "raspbian" ] || [ "$DISTRO" == "pop" ] || [ "$DISTRO" == "kali" ] || [ "$DISTRO" == "linuxmint" ]; }; then
+    apt-get update
   elif { [ "$DISTRO" == "fedora" ] || [ "$DISTRO" == "centos" ] || [ "$DISTRO" == "rhel" ]; }; then
-    yum update -y &&
+    yum update -y
   elif { [ "$DISTRO" == "arch" ] || [ "$DISTRO" == "manjaro" ]; }; then
-    pacman -Syu --noconfirm
+    pacman -Syu --noconfirm iptables curl
+  elif [ "$DISTRO" == "alpine" ]; then
+    apk update && apk add iptables curl
+  elif [ "$DISTRO" == "freebsd" ]; then
+    pkg update && pkg install curl
   fi
 }
 
@@ -96,7 +100,7 @@ install-the-app
 
 # configure service here
 function config-service() {
-  if { [ "$DISTRO" == "ubuntu" ] || [ "$DISTRO" == "debian" ] || [ "$DISTRO" == "raspbian" ] || [ "$DISTRO" == "pop" ] || [ "$DISTRO" == "kali" ] || [ "$DISTRO" == "fedora" ] || [ "$DISTRO" == "centos" ] || [ "$DISTRO" == "rhel" ] || [ "$DISTRO" == "arch" ] || [ "$DISTRO" == "manjaro" ]; }; then
+  if { [ "$DISTRO" == "ubuntu" ] || [ "$DISTRO" == "debian" ] || [ "$DISTRO" == "raspbian" ] || [ "$DISTRO" == "pop" ] || [ "$DISTRO" == "kali" ] || [ "$DISTRO" == "linuxmint" ] || [ "$DISTRO" == "fedora" ] || [ "$DISTRO" == "centos" ] || [ "$DISTRO" == "rhel" ] || [ "$DISTRO" == "arch" ] || [ "$DISTRO" == "manjaro" ] || [ "$DISTRO" == "alpine" ] || [ "$DISTRO" == "freebsd" ]; }; then
     #
   fi
 }
