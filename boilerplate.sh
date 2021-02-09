@@ -55,8 +55,8 @@ GLOBAL_VARIABLES="/config/file/path"
 
 if [ ! -f "$GLOBAL_VARIABLES" ]; then
 
-# comments for the first question
-function first-question() {
+  # comments for the first question
+  function first-question() {
     echo "What is the first question that u want to ask the user?"
     echo "  1) Ansewer #1 (Recommended)"
     echo "  2) Ansewer #2"
@@ -75,63 +75,63 @@ function first-question() {
       read -rp "User text: " -e -i "Ansewer #3" FIRST_QUESTION
       ;;
     esac
-}
+  }
 
-# comments for the first question
-first-question
+  # comments for the first question
+  first-question
 
-### use the code above to ask any questions as u want.
-function install-the-app() {
-  if { [ "$DISTRO" == "ubuntu" ] || [ "$DISTRO" == "debian" ] || [ "$DISTRO" == "raspbian" ] || [ "$DISTRO" == "pop" ] || [ "$DISTRO" == "kali" ] || [ "$DISTRO" == "linuxmint" ]; }; then
-    apt-get update
-  elif { [ "$DISTRO" == "fedora" ] || [ "$DISTRO" == "centos" ] || [ "$DISTRO" == "rhel" ]; }; then
-    yum update -y
-  elif { [ "$DISTRO" == "arch" ] || [ "$DISTRO" == "manjaro" ]; }; then
-    pacman -Syu --noconfirm iptables curl
-  elif [ "$DISTRO" == "alpine" ]; then
-    apk update && apk add iptables curl
-  elif [ "$DISTRO" == "freebsd" ]; then
-    pkg update && pkg install curl
-  fi
-}
+  ### use the code above to ask any questions as u want.
+  function install-the-app() {
+    if { [ "$DISTRO" == "ubuntu" ] || [ "$DISTRO" == "debian" ] || [ "$DISTRO" == "raspbian" ] || [ "$DISTRO" == "pop" ] || [ "$DISTRO" == "kali" ] || [ "$DISTRO" == "linuxmint" ]; }; then
+      apt-get update
+    elif { [ "$DISTRO" == "fedora" ] || [ "$DISTRO" == "centos" ] || [ "$DISTRO" == "rhel" ]; }; then
+      yum update -y
+    elif { [ "$DISTRO" == "arch" ] || [ "$DISTRO" == "manjaro" ]; }; then
+      pacman -Syu --noconfirm iptables curl
+    elif [ "$DISTRO" == "alpine" ]; then
+      apk update && apk add iptables curl
+    elif [ "$DISTRO" == "freebsd" ]; then
+      pkg update && pkg install curl
+    fi
+  }
 
-# run the function
-install-the-app
+  # run the function
+  install-the-app
 
-# configure service here
-function config-service() {
-  if { [ "$DISTRO" == "ubuntu" ] || [ "$DISTRO" == "debian" ] || [ "$DISTRO" == "raspbian" ] || [ "$DISTRO" == "pop" ] || [ "$DISTRO" == "kali" ] || [ "$DISTRO" == "linuxmint" ] || [ "$DISTRO" == "fedora" ] || [ "$DISTRO" == "centos" ] || [ "$DISTRO" == "rhel" ] || [ "$DISTRO" == "arch" ] || [ "$DISTRO" == "manjaro" ] || [ "$DISTRO" == "alpine" ] || [ "$DISTRO" == "freebsd" ]; }; then
-    #
-  fi
-}
+  # configure service here
+  function config-service() {
+    if { [ "$DISTRO" == "ubuntu" ] || [ "$DISTRO" == "debian" ] || [ "$DISTRO" == "raspbian" ] || [ "$DISTRO" == "pop" ] || [ "$DISTRO" == "kali" ] || [ "$DISTRO" == "linuxmint" ] || [ "$DISTRO" == "fedora" ] || [ "$DISTRO" == "centos" ] || [ "$DISTRO" == "rhel" ] || [ "$DISTRO" == "arch" ] || [ "$DISTRO" == "manjaro" ] || [ "$DISTRO" == "alpine" ] || [ "$DISTRO" == "freebsd" ]; }; then
+      #
+    fi
+  }
 
-# run the function
-config-service
+  # run the function
+  config-service
 
-function service-manager() {
-  if pgrep systemd-journal; then
-    systemctl disable SERVICE
-    systemctl stop SERVICE
-  else
-    service SERVICE disable
-    service SERVICE stop
-  fi
-}
+  function service-manager() {
+    if pgrep systemd-journal; then
+      systemctl disable SERVICE
+      systemctl stop SERVICE
+    else
+      service SERVICE disable
+      service SERVICE stop
+    fi
+  }
 
-# restart the chrome service
-service-manager
+  # restart the chrome service
+  service-manager
 
 else
 
-# take user input
-function take-user-input() {
+  # take user input
+  function take-user-input() {
     echo "What do you want to do?"
     echo "   1) Option #1"
     echo "   2) Option #2"
     echo "   3) Option #3"
     echo "   4) Option #4"
     echo "   5) Option #5"
-    until [[ "$USER_OPTIONS" =~ ^[1-5]$ ]]; do
+    until [[ "$USER_OPTIONS" =~ ^[0-9]+$ ]] && [ "$USER_OPTIONS" -ge 1 ] && [ "$USER_OPTIONS" -le 5 ]; do
       read -rp "Select an Option [1-5]: " -e -i 1 USER_OPTIONS
     done
     case $USER_OPTIONS in
@@ -151,9 +151,9 @@ function take-user-input() {
       echo "Hello, World!"
       ;;
     esac
-}
+  }
 
-# run the function
-take-user-input
+  # run the function
+  take-user-input
 
 fi
