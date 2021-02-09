@@ -1,6 +1,6 @@
 ### Shell script Boilerplate
 
-Just a boilerplate to write good shell scripts, Please always use a boilerplate it makes the script 100x better.
+Just a boilerplate to write good shell scripts, Please always try and use a boilerplate to write a shell script, it makes the script 100x better.
 
 ---
 ### Author
