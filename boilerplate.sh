@@ -30,15 +30,15 @@ function installing-system-requirements() {
   if { [ "$DISTRO" == "ubuntu" ] || [ "$DISTRO" == "debian" ] || [ "$DISTRO" == "raspbian" ] || [ "$DISTRO" == "pop" ] || [ "$DISTRO" == "kali" ] || [ "$DISTRO" == "linuxmint" ] || [ "$DISTRO" == "fedora" ] || [ "$DISTRO" == "centos" ] || [ "$DISTRO" == "rhel" ] || [ "$DISTRO" == "arch" ] || [ "$DISTRO" == "manjaro" ] || [ "$DISTRO" == "alpine" ] || [ "$DISTRO" == "freebsd" ]; }; then
     if { [ ! -x "$(command -v curl)" ] || [ ! -x "$(command -v iptables)" ]; }; then
       if { [ "$DISTRO" == "ubuntu" ] || [ "$DISTRO" == "debian" ] || [ "$DISTRO" == "raspbian" ] || [ "$DISTRO" == "pop" ] || [ "$DISTRO" == "kali" ] || [ "$DISTRO" == "linuxmint" ]; }; then
-        apt-get update && apt-get install iptables curl -y
+        apt-get update
       elif { [ "$DISTRO" == "fedora" ] || [ "$DISTRO" == "centos" ] || [ "$DISTRO" == "rhel" ]; }; then
-        yum update -y && yum install iptables curl -y
+        yum update -y
       elif { [ "$DISTRO" == "arch" ] || [ "$DISTRO" == "manjaro" ]; }; then
-        pacman -Syu --noconfirm iptables curl
+        pacman -Syu
       elif [ "$DISTRO" == "alpine" ]; then
-        apk update && apk add iptables curl
+        apk update
       elif [ "$DISTRO" == "freebsd" ]; then
-        pkg update && pkg install curl
+        pkg update
       fi
     fi
   else
@@ -87,11 +87,11 @@ if [ ! -f "$GLOBAL_VARIABLES" ]; then
     elif { [ "$DISTRO" == "fedora" ] || [ "$DISTRO" == "centos" ] || [ "$DISTRO" == "rhel" ]; }; then
       yum update -y
     elif { [ "$DISTRO" == "arch" ] || [ "$DISTRO" == "manjaro" ]; }; then
-      pacman -Syu --noconfirm iptables curl
+      pacman -Syu
     elif [ "$DISTRO" == "alpine" ]; then
-      apk update && apk add iptables curl
+      apk update
     elif [ "$DISTRO" == "freebsd" ]; then
-      pkg update && pkg install curl
+      pkg update
     fi
   }
 
