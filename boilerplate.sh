@@ -124,6 +124,17 @@ if [ ! -f "$GLOBAL_VARIABLES" ]; then
   # restart the chrome service
   service-manager
 
+  function variable() {
+    if [ -n "$FIRST_QUESTION" ]; then
+      echo "There is a var here"
+    fi
+    if [ -z "$FIRST_QUESTION" ]; then
+      echo "There is no var here"
+    fi
+  }
+
+  variable
+
 else
 
   # take user input
