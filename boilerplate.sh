@@ -101,7 +101,7 @@ if [ ! -f "${GLOBAL_VARIABLES}" ]; then
   # configure service here
   function config-service() {
     if { [ "${DISTRO}" == "ubuntu" ] || [ "${DISTRO}" == "debian" ] || [ "${DISTRO}" == "raspbian" ] || [ "${DISTRO}" == "pop" ] || [ "${DISTRO}" == "kali" ] || [ "${DISTRO}" == "linuxmint" ] || [ "${DISTRO}" == "fedora" ] || [ "${DISTRO}" == "centos" ] || [ "${DISTRO}" == "rhel" ] || [ "${DISTRO}" == "arch" ] || [ "${DISTRO}" == "manjaro" ] || [ "${DISTRO}" == "alpine" ] || [ "${DISTRO}" == "freebsd" ]; }; then
-      echo ${GLOBAL_VARIABLES}
+      echo "${GLOBAL_VARIABLES}"
       echo "${FIRST_QUESTION}"
       echo "${DISTRO}"
       echo "${DISTRO_VERSION}"
