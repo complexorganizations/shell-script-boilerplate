@@ -3,7 +3,7 @@
 
 # Require script to be run as root
 function super-user-check() {
-  if [ "$EUID" -ne 0 ]; then
+  if [ "${EUID}" -ne 0 ]; then
     echo "You need to run this script as super user."
     exit
   fi
@@ -17,8 +17,8 @@ function dist-check() {
   if [ -e /etc/os-release ]; then
     # shellcheck disable=SC1091
     source /etc/os-release
-    DISTRO=$ID
-    DISTRO_VERSION=$VERSION_ID
+    DISTRO=${ID}
+    DISTRO_VERSION=${VERSION_ID}
   fi
 }
 
@@ -27,22 +27,22 @@ dist-check
 
 # Pre-Checks system requirements
 function installing-system-requirements() {
-  if { [ "$DISTRO" == "ubuntu" ] || [ "$DISTRO" == "debian" ] || [ "$DISTRO" == "raspbian" ] || [ "$DISTRO" == "pop" ] || [ "$DISTRO" == "kali" ] || [ "$DISTRO" == "linuxmint" ] || [ "$DISTRO" == "fedora" ] || [ "$DISTRO" == "centos" ] || [ "$DISTRO" == "rhel" ] || [ "$DISTRO" == "arch" ] || [ "$DISTRO" == "manjaro" ] || [ "$DISTRO" == "alpine" ] || [ "$DISTRO" == "freebsd" ]; }; then
+  if { [ "${DISTRO}" == "ubuntu" ] || [ "${DISTRO}" == "debian" ] || [ "${DISTRO}" == "raspbian" ] || [ "${DISTRO}" == "pop" ] || [ "${DISTRO}" == "kali" ] || [ "${DISTRO}" == "linuxmint" ] || [ "${DISTRO}" == "fedora" ] || [ "${DISTRO}" == "centos" ] || [ "${DISTRO}" == "rhel" ] || [ "${DISTRO}" == "arch" ] || [ "${DISTRO}" == "manjaro" ] || [ "${DISTRO}" == "alpine" ] || [ "${DISTRO}" == "freebsd" ]; }; then
     if { [ ! -x "$(command -v curl)" ] || [ ! -x "$(command -v iptables)" ]; }; then
-      if { [ "$DISTRO" == "ubuntu" ] || [ "$DISTRO" == "debian" ] || [ "$DISTRO" == "raspbian" ] || [ "$DISTRO" == "pop" ] || [ "$DISTRO" == "kali" ] || [ "$DISTRO" == "linuxmint" ]; }; then
+      if { [ "${DISTRO}" == "ubuntu" ] || [ "${DISTRO}" == "debian" ] || [ "${DISTRO}" == "raspbian" ] || [ "${DISTRO}" == "pop" ] || [ "${DISTRO}" == "kali" ] || [ "${DISTRO}" == "linuxmint" ]; }; then
         apt-get update
-      elif { [ "$DISTRO" == "fedora" ] || [ "$DISTRO" == "centos" ] || [ "$DISTRO" == "rhel" ]; }; then
+      elif { [ "${DISTRO}" == "fedora" ] || [ "${DISTRO}" == "centos" ] || [ "${DISTRO}" == "rhel" ]; }; then
         yum update -y
-      elif { [ "$DISTRO" == "arch" ] || [ "$DISTRO" == "manjaro" ]; }; then
+      elif { [ "${DISTRO}" == "arch" ] || [ "${DISTRO}" == "manjaro" ]; }; then
         pacman -Syu
-      elif [ "$DISTRO" == "alpine" ]; then
+      elif [ "${DISTRO}" == "alpine" ]; then
         apk update
-      elif [ "$DISTRO" == "freebsd" ]; then
+      elif [ "${DISTRO}" == "freebsd" ]; then
         pkg update
       fi
     fi
   else
-    echo "Error: $DISTRO not supported."
+    echo "Error: ${DISTRO} not supported."
     exit
   fi
 }
@@ -53,7 +53,7 @@ installing-system-requirements
 # Global variables
 GLOBAL_VARIABLES="/config/file/path"
 
-if [ ! -f "$GLOBAL_VARIABLES" ]; then
+if [ ! -f "${GLOBAL_VARIABLES}" ]; then
 
   # comments for the first question
   function first-question() {
@@ -61,10 +61,10 @@ if [ ! -f "$GLOBAL_VARIABLES" ]; then
     echo "  1) Ansewer #1 (Recommended)"
     echo "  2) Ansewer #2"
     echo "  3) Custom (Advanced)"
-    until [[ "$FIRST_QUESTION_SETTINGS" =~ ^[1-3]$ ]]; do
+    until [[ "${FIRST_QUESTION_SETTINGS}" =~ ^[1-3]$ ]]; do
       read -rp "Subnetwork choice [1-3]: " -e -i 1 FIRST_QUESTION_SETTINGS
     done
-    case $FIRST_QUESTION_SETTINGS in
+    case ${FIRST_QUESTION_SETTINGS} in
     1)
       FIRST_QUESTION="Ansewer #1"
       ;;
@@ -82,15 +82,15 @@ if [ ! -f "$GLOBAL_VARIABLES" ]; then
 
   ### use the code above to ask any questions as u want.
   function install-the-app() {
-    if { [ "$DISTRO" == "ubuntu" ] || [ "$DISTRO" == "debian" ] || [ "$DISTRO" == "raspbian" ] || [ "$DISTRO" == "pop" ] || [ "$DISTRO" == "kali" ] || [ "$DISTRO" == "linuxmint" ]; }; then
+    if { [ "${DISTRO}" == "ubuntu" ] || [ "${DISTRO}" == "debian" ] || [ "${DISTRO}" == "raspbian" ] || [ "${DISTRO}" == "pop" ] || [ "${DISTRO}" == "kali" ] || [ "${DISTRO}" == "linuxmint" ]; }; then
       apt-get update
-    elif { [ "$DISTRO" == "fedora" ] || [ "$DISTRO" == "centos" ] || [ "$DISTRO" == "rhel" ]; }; then
+    elif { [ "${DISTRO}" == "fedora" ] || [ "${DISTRO}" == "centos" ] || [ "${DISTRO}" == "rhel" ]; }; then
       yum update -y
-    elif { [ "$DISTRO" == "arch" ] || [ "$DISTRO" == "manjaro" ]; }; then
+    elif { [ "${DISTRO}" == "arch" ] || [ "${DISTRO}" == "manjaro" ]; }; then
       pacman -Syu
-    elif [ "$DISTRO" == "alpine" ]; then
+    elif [ "${DISTRO}" == "alpine" ]; then
       apk update
-    elif [ "$DISTRO" == "freebsd" ]; then
+    elif [ "${DISTRO}" == "freebsd" ]; then
       pkg update
     fi
   }
@@ -100,11 +100,11 @@ if [ ! -f "$GLOBAL_VARIABLES" ]; then
 
   # configure service here
   function config-service() {
-    if { [ "$DISTRO" == "ubuntu" ] || [ "$DISTRO" == "debian" ] || [ "$DISTRO" == "raspbian" ] || [ "$DISTRO" == "pop" ] || [ "$DISTRO" == "kali" ] || [ "$DISTRO" == "linuxmint" ] || [ "$DISTRO" == "fedora" ] || [ "$DISTRO" == "centos" ] || [ "$DISTRO" == "rhel" ] || [ "$DISTRO" == "arch" ] || [ "$DISTRO" == "manjaro" ] || [ "$DISTRO" == "alpine" ] || [ "$DISTRO" == "freebsd" ]; }; then
-      echo $GLOBAL_VARIABLES
-      echo "$FIRST_QUESTION"
-      echo "$DISTRO"
-      echo "$DISTRO_VERSION"
+    if { [ "${DISTRO}" == "ubuntu" ] || [ "${DISTRO}" == "debian" ] || [ "${DISTRO}" == "raspbian" ] || [ "${DISTRO}" == "pop" ] || [ "${DISTRO}" == "kali" ] || [ "${DISTRO}" == "linuxmint" ] || [ "${DISTRO}" == "fedora" ] || [ "${DISTRO}" == "centos" ] || [ "${DISTRO}" == "rhel" ] || [ "${DISTRO}" == "arch" ] || [ "${DISTRO}" == "manjaro" ] || [ "${DISTRO}" == "alpine" ] || [ "${DISTRO}" == "freebsd" ]; }; then
+      echo ${GLOBAL_VARIABLES}
+      echo "${FIRST_QUESTION}"
+      echo "${DISTRO}"
+      echo "${DISTRO_VERSION}"
     fi
   }
 
@@ -125,10 +125,10 @@ if [ ! -f "$GLOBAL_VARIABLES" ]; then
   service-manager
 
   function variable() {
-    if [ -n "$FIRST_QUESTION" ]; then
+    if [ -n "${FIRST_QUESTION}" ]; then
       echo "There is a var here"
     fi
-    if [ -z "$FIRST_QUESTION" ]; then
+    if [ -z "${FIRST_QUESTION}" ]; then
       echo "There is no var here"
     fi
   }
@@ -145,10 +145,10 @@ else
     echo "   3) Option #3"
     echo "   4) Option #4"
     echo "   5) Option #5"
-    until [[ "$USER_OPTIONS" =~ ^[0-9]+$ ]] && [ "$USER_OPTIONS" -ge 1 ] && [ "$USER_OPTIONS" -le 5 ]; do
+    until [[ "${USER_OPTIONS}" =~ ^[0-9]+$ ]] && [ "${USER_OPTIONS}" -ge 1 ] && [ "${USER_OPTIONS}" -le 5 ]; do
       read -rp "Select an Option [1-5]: " -e -i 1 USER_OPTIONS
     done
-    case $USER_OPTIONS in
+    case ${USER_OPTIONS} in
     1)
       echo "Hello, World!"
       ;;
