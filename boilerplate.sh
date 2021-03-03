@@ -61,7 +61,7 @@ if [ ! -f "${GLOBAL_VARIABLES}" ]; then
     echo "  1) Ansewer #1 (Recommended)"
     echo "  2) Ansewer #2"
     echo "  3) Custom (Advanced)"
-    until [[ "${FIRST_QUESTION_SETTINGS}" =~ ^[1-3]$ ]]; do
+    until [[ "${FIRST_QUESTION_SETTINGS}" =~ ^[0-9]+$ ]] && [ "${FIRST_QUESTION_SETTINGS}" -ge 1 ] && [ "${FIRST_QUESTION_SETTINGS}" -le 9 ]; do
       read -rp "Subnetwork choice [1-3]: " -e -i 1 FIRST_QUESTION_SETTINGS
     done
     case ${FIRST_QUESTION_SETTINGS} in
