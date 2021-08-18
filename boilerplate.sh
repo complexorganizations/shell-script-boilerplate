@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # https://github.com/complexorganizations/shell-script-boilerplate
 
 # Require script to be run as root
