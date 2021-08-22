@@ -62,7 +62,7 @@ if [ ! -f "${GLOBAL_VARIABLES}" ]; then
     echo "  2) Ansewer #2"
     echo "  3) Custom (Advanced)"
     until [[ "${FIRST_QUESTION_SETTINGS}" =~ ^[0-9]+$ ]] && [ "${FIRST_QUESTION_SETTINGS}" -ge 1 ] && [ "${FIRST_QUESTION_SETTINGS}" -le 3 ]; do
-      read -rp "Subnetwork choice [1-3]: " -e -i 1 FIRST_QUESTION_SETTINGS
+      read -rp "Ansewer choice [1-3]: " -e -i 1 FIRST_QUESTION_SETTINGS
     done
     case ${FIRST_QUESTION_SETTINGS} in
     1)
@@ -153,7 +153,14 @@ else
       echo "Hello, World!"
       ;;
     2)
-      echo "Hello, World!"
+      read -rp "Ask the user a Yes/No question. (y/n):" ASK_USER_A_QUESTION
+      if { [ "${ASK_USER_A_QUESTION}" = "y" ] || [ "${ASK_USER_A_QUESTION}" = "Y" ]; }; then
+        echo "The answer is yes."
+      elif { [ "${ASK_USER_A_QUESTION}" = "n" ] || [ "${ASK_USER_A_QUESTION}" = "N" ]; }; then
+        echo "The answer is no."
+      else
+        exit
+      fi
       ;;
     3)
       echo "Hello, World!"
