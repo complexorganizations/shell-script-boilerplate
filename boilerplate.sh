@@ -4,45 +4,52 @@
 # Require script to be run as root
 function super-user-check() {
   if [ "${EUID}" -ne 0 ]; then
-    echo "You need to run this script as super user."
+    echo "Error: You need to run this script as administrator."
     exit
   fi
 }
 
 # Check for root
 super-user-check
-
-# Detect Operating System
-function dist-check() {
-  if [ -e /etc/os-release ]; then
-    # shellcheck disable=SC1091
+# Get the current system information
+function system-information() {
+  if [ -f /etc/os-release ]; then
+    # shellcheck source=/dev/null
     source /etc/os-release
-    DISTRO=${ID}
-    DISTRO_VERSION=${VERSION_ID}
+    CURRENT_DISTRO=${ID}
+    CURRENT_DISTRO_VERSION=${VERSION_ID}
   fi
 }
 
-# Check Operating System
-dist-check
+# Get the current system information
+system-information
 
 # Pre-Checks system requirements
 function installing-system-requirements() {
-  if { [ "${DISTRO}" == "ubuntu" ] || [ "${DISTRO}" == "debian" ] || [ "${DISTRO}" == "raspbian" ] || [ "${DISTRO}" == "pop" ] || [ "${DISTRO}" == "kali" ] || [ "${DISTRO}" == "linuxmint" ] || [ "${DISTRO}" == "fedora" ] || [ "${DISTRO}" == "centos" ] || [ "${DISTRO}" == "rhel" ] || [ "${DISTRO}" == "arch" ] || [ "${DISTRO}" == "archarm" ] || [ "${DISTRO}" == "manjaro" ] || [ "${DISTRO}" == "alpine" ] || [ "${DISTRO}" == "freebsd" ]; }; then
+  if { [ "${CURRENT_DISTRO}" == "ubuntu" ] || [ "${CURRENT_DISTRO}" == "debian" ] || [ "${CURRENT_DISTRO}" == "raspbian" ] || [ "${CURRENT_DISTRO}" == "pop" ] || [ "${CURRENT_DISTRO}" == "kali" ] || [ "${CURRENT_DISTRO}" == "linuxmint" ] || [ "${CURRENT_DISTRO}" == "neon" ] || [ "${CURRENT_DISTRO}" == "fedora" ] || [ "${CURRENT_DISTRO}" == "centos" ] || [ "${CURRENT_DISTRO}" == "rhel" ] || [ "${CURRENT_DISTRO}" == "almalinux" ] || [ "${CURRENT_DISTRO}" == "rocky" ] || [ "${CURRENT_DISTRO}" == "arch" ] || [ "${CURRENT_DISTRO}" == "archarm" ] || [ "${CURRENT_DISTRO}" == "manjaro" ] || [ "${CURRENT_DISTRO}" == "alpine" ] || [ "${CURRENT_DISTRO}" == "freebsd" ] || [ "${CURRENT_DISTRO}" == "ol" ]; }; then
     if { [ ! -x "$(command -v curl)" ] || [ ! -x "$(command -v iptables)" ]; }; then
-      if { [ "${DISTRO}" == "ubuntu" ] || [ "${DISTRO}" == "debian" ] || [ "${DISTRO}" == "raspbian" ] || [ "${DISTRO}" == "pop" ] || [ "${DISTRO}" == "kali" ] || [ "${DISTRO}" == "linuxmint" ]; }; then
+      if { [ "${CURRENT_DISTRO}" == "ubuntu" ] || [ "${CURRENT_DISTRO}" == "debian" ] || [ "${CURRENT_DISTRO}" == "raspbian" ] || [ "${CURRENT_DISTRO}" == "pop" ] || [ "${CURRENT_DISTRO}" == "kali" ] || [ "${CURRENT_DISTRO}" == "linuxmint" ] || [ "${CURRENT_DISTRO}" == "neon" ]; }; then
         apt-get update
-      elif { [ "${DISTRO}" == "fedora" ] || [ "${DISTRO}" == "centos" ] || [ "${DISTRO}" == "rhel" ]; }; then
-        yum update -y
-      elif { [ "${DISTRO}" == "arch" ] || [ "${DISTRO}" == "archarm" ] || [ "${DISTRO}" == "manjaro" ]; }; then
-        pacman -Syu
-      elif [ "${DISTRO}" == "alpine" ]; then
+        apt-get install curl --yes
+      elif { [ "${CURRENT_DISTRO}" == "fedora" ] || [ "${CURRENT_DISTRO}" == "centos" ] || [ "${CURRENT_DISTRO}" == "rhel" ] || [ "${CURRENT_DISTRO}" == "almalinux" ] || [ "${CURRENT_DISTRO}" == "rocky" ]; }; then
+        yum check-update
+        yum install curl --yes
+      elif { [ "${CURRENT_DISTRO}" == "arch" ] || [ "${CURRENT_DISTRO}" == "archarm" ] || [ "${CURRENT_DISTRO}" == "manjaro" ]; }; then
+        pacman -Sy
+        pacman -S --noconfirm --needed curl
+      elif [ "${CURRENT_DISTRO}" == "alpine" ]; then
         apk update
-      elif [ "${DISTRO}" == "freebsd" ]; then
+        apk add curl
+      elif [ "${CURRENT_DISTRO}" == "freebsd" ]; then
         pkg update
+        pkg install curl
+      elif [ "${CURRENT_DISTRO}" == "ol" ]; then
+        yum check-update
+        yum install curl --yes
       fi
     fi
   else
-    echo "Error: ${DISTRO} not supported."
+    echo "Error: ${CURRENT_DISTRO} ${CURRENT_DISTRO_VERSION} is not supported."
     exit
   fi
 }
@@ -82,17 +89,19 @@ if [ ! -f "${GLOBAL_VARIABLES}" ]; then
 
   ### use the code above to ask any questions as u want.
   function install-the-app() {
-    if { [ "${DISTRO}" == "ubuntu" ] || [ "${DISTRO}" == "debian" ] || [ "${DISTRO}" == "raspbian" ] || [ "${DISTRO}" == "pop" ] || [ "${DISTRO}" == "kali" ] || [ "${DISTRO}" == "linuxmint" ]; }; then
-      apt-get update
-    elif { [ "${DISTRO}" == "fedora" ] || [ "${DISTRO}" == "centos" ] || [ "${DISTRO}" == "rhel" ]; }; then
-      yum update -y
-    elif { [ "${DISTRO}" == "arch" ] || [ "${DISTRO}" == "archarm" ] || [ "${DISTRO}" == "manjaro" ]; }; then
-      pacman -Syu
-    elif [ "${DISTRO}" == "alpine" ]; then
-      apk update
-    elif [ "${DISTRO}" == "freebsd" ]; then
-      pkg update
-    fi
+      if { [ "${CURRENT_DISTRO}" == "ubuntu" ] || [ "${CURRENT_DISTRO}" == "debian" ] || [ "${CURRENT_DISTRO}" == "raspbian" ] || [ "${CURRENT_DISTRO}" == "pop" ] || [ "${CURRENT_DISTRO}" == "kali" ] || [ "${CURRENT_DISTRO}" == "linuxmint" ] || [ "${CURRENT_DISTRO}" == "neon" ]; }; then
+        apt-get update
+      elif { [ "${CURRENT_DISTRO}" == "fedora" ] || [ "${CURRENT_DISTRO}" == "centos" ] || [ "${CURRENT_DISTRO}" == "rhel" ] || [ "${CURRENT_DISTRO}" == "almalinux" ] || [ "${CURRENT_DISTRO}" == "rocky" ]; }; then
+        yum check-update
+      elif { [ "${CURRENT_DISTRO}" == "arch" ] || [ "${CURRENT_DISTRO}" == "archarm" ] || [ "${CURRENT_DISTRO}" == "manjaro" ]; }; then
+        pacman -Sy
+      elif [ "${CURRENT_DISTRO}" == "alpine" ]; then
+        apk update
+      elif [ "${CURRENT_DISTRO}" == "freebsd" ]; then
+        pkg update
+      elif [ "${CURRENT_DISTRO}" == "ol" ]; then
+        yum check-update
+      fi
   }
 
   # run the function
